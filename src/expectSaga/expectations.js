@@ -1,4 +1,5 @@
 // @flow
+import expect from 'jest';
 import inspect from 'util-inspect';
 import isMatch from 'lodash.ismatch';
 import isEqual from 'lodash.isequal';
@@ -47,6 +48,8 @@ export function createEffectExpectation({
       errorMessage =
         `\n${effectName} expectation unmet:` +
         `\n\nNot Expected\n------------\n${serializedEffect}\n`;
+
+      throw new SagaTestError(errorMessage);
     } else if (!deleted && expected) {
       const serializedEffect = serializeEffect(expectedEffect, storeKey);
 
@@ -55,9 +58,6 @@ export function createEffectExpectation({
         `\n\nExpected\n--------\n${serializedEffect}\n`;
 
       errorMessage += reportActualEffects(store, storeKey, effectName);
-    }
-
-    if (errorMessage) {
       throw new SagaTestError(errorMessage);
     }
   };
@@ -74,30 +74,9 @@ export function createReturnExpectation({
 }: ReturnExpectationArgs): Expectation {
   return ({ returnValue }: ExpectationThunkArgs) => {
     if (expected && !isEqual(value, returnValue)) {
-      const serializedActual = inspect(returnValue, { depth: 3 });
-      const serializedExpected = inspect(value, { depth: 3 });
-
-      const errorMessage = `
-Expected to return:
--------------------
-${serializedExpected}
-
-But returned instead:
----------------------
-${serializedActual}
-`;
-
-      throw new SagaTestError(errorMessage);
+      expect(returnValue).toEqual(value);
     } else if (!expected && isEqual(value, returnValue)) {
-      const serializedExpected = inspect(value, { depth: 3 });
-
-      const errorMessage = `
-Did not expect to return:
--------------------------
-${serializedExpected}
-`;
-
-      throw new SagaTestError(errorMessage);
+      expect(returnValue).not.toEqual(value);
     }
   };
 }
@@ -113,30 +92,9 @@ export function createStoreStateExpectation({
 }: StoreStateExpectationArgs): Expectation {
   return ({ storeState }: ExpectationThunkArgs) => {
     if (expected && !isEqual(expectedState, storeState)) {
-      const serializedActual = inspect(storeState, { depth: 3 });
-      const serializedExpected = inspect(expectedState, { depth: 3 });
-
-      const errorMessage = `
-Expected to have final store state:
------------------------------------
-${serializedExpected}
-
-But instead had final store state:
-----------------------------------
-${serializedActual}
-`;
-
-      throw new SagaTestError(errorMessage);
+      expect(storeState).toEqual(expectedState);
     } else if (!expected && isEqual(expectedState, storeState)) {
-      const serializedExpected = inspect(expectedState, { depth: 3 });
-
-      const errorMessage = `
-Expected to not have final store state:
----------------------------------------
-${serializedExpected}
-`;
-
-      throw new SagaTestError(errorMessage);
+      expect(storeState).not.toEqual(expectedState);
     }
   };
 }
