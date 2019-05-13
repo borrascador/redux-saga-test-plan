@@ -49,6 +49,9 @@
   },
   "homepage": "https://github.com/jfairbank/redux-saga-test-plan#readme",
   "devDependencies": {
+    "@redux-saga/is": "^1.0.1",
+    "@redux-saga/symbols": "^1.0.1",
+    "@redux-saga/testing-utils": "^1.0.1",
     "babel-cli": "^6.7.7",
     "babel-core": "^6.7.7",
     "babel-eslint": "^8.0.0",
@@ -75,13 +78,11 @@
     "prettier": "1.11.0",
     "redux": "^4.0.0",
     "redux-saga": "^1.0.1",
-    "@redux-saga/is": "^1.0.1",
-    "@redux-saga/testing-utils": "^1.0.1",
-    "@redux-saga/symbols": "^1.0.1",
     "rimraf": "^2.5.4"
   },
   "dependencies": {
     "core-js": "^2.4.1",
+    "expect": "^24.8.0",
     "fsm-iterator": "^1.1.0",
     "lodash.isequal": "^4.5.0",
     "lodash.ismatch": "^4.4.0",
