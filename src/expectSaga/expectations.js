@@ -1,5 +1,4 @@
 // @flow
-import expect from 'jest';
 import inspect from 'util-inspect';
 import isMatch from 'lodash.ismatch';
 import isEqual from 'lodash.isequal';
